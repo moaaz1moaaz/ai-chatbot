@@ -1,21 +1,18 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوت محادثة الذكاء الاصطناعي</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Assistant</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="chat-container">
-        <h1>بوت محادثة الذكاء الاصطناعي</h1>
-        <div class="chat-box" id="chatbox"></div>
-        <div class="input-container">
-            <input type="text" id="userInput" placeholder="اكتب رسالتك هنا..." />
-            <button onclick="sendMessage()">إرسال</button>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
+  <div id="app">
+    <h1>AI Assistant</h1>
+    <div id="chat-box"></div>
+    <input type="text" id="user-input" placeholder="Ask something..." />
+    <button id="send-btn">Send</button>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
