@@ -1,40 +1,39 @@
-// استخدم مفتاح API الجديد هنا
-const API_KEY = "sk-svcacct-7k7kiz-eqt6SXR3F5qRZ4X3R4rzFXEFIq9y3Belxr_noC_UjPp2P4lePTnVbYT3BlbkFJGerZVDK-_MoELcemNw1N-pSKDjZpyjOFJYR05hMA0bxazwPoh7Kn-zpr_uSDAA"; // استبدل بـ مفتاح API الفعلي
+const chatBox = document.getElementById("chat-box");
+const userInput = document.getElementById("user-input");
+const sendBtn = document.getElementById("send-btn");
 
-async function sendMessage() {
-    const userInput = document.getElementById('userInput').value;
-    const chatbox = document.getElementById('chatbox');
-    
-    // إظهار الرسالة التي كتبها المستخدم في الواجهة
-    chatbox.innerHTML += `<p><strong>أنت:</strong> ${userInput}</p>`;
-    
-    // تنظيف حقل الإدخال بعد إرسال الرسالة
-    document.getElementById('userInput').value = '';
-    
-    // الاتصال بـ OpenAI API
-    try {
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${API_KEY}`
-            },
-            body: JSON.stringify({
-                model: "gpt-3.5-turbo", // أو يمكنك استخدام gpt-4 إذا كان لديك
-                messages: [{ role: "user", content: userInput }]
-            })
-        });
+sendBtn.addEventListener("click", async () => {
+  const userText = userInput.value;
+  if (!userText) return;
 
-        const data = await response.json();
-        const botReply = data.choices[0].message.content;
+  appendMessage("User", userText);
+  userInput.value = "";
 
-        // عرض إجابة البوت في الواجهة
-        chatbox.innerHTML += `<p><strong>البوت:</strong> ${botReply}</p>`;
-        
-        // التمرير لأسفل في الدردشة
-        chatbox.scrollTop = chatbox.scrollHeight;
-    } catch (error) {
-        console.error('خطأ في الاتصال بـ OpenAI:', error);
-        chatbox.innerHTML += `<p><strong>خطأ:</strong> تعذر الاتصال بالبوت.</p>`;
-    }
+  const response = await getAIResponse(userText);
+  appendMessage("AI", response);
+});
+
+function appendMessage(sender, text) {
+  const message = document.createElement("div");
+  message.textContent = `${sender}: ${text}`;
+  chatBox.appendChild(message);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+async function getAIResponse(prompt) {
+  const apiKey = "sk-svcacct-BH8Oc8KwtWY3UaeP5n7aXE4_mJnj-wKlC02Z-eScb3uUiYpSMKEwnUj1Tvg6AKSXOT3BlbkFJi30cNH94wnQ_1xS2K1nQugUQ4b1l2xBWO1ByOAR6RAKOMwwMDq7kJZgzAMcF-PsAA";
+  const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      model: "gpt-3.5-turbo",
+      messages: [{ role: "user", content: prompt }]
+    })
+  });
+
+  const data = await response.json();
+  return data.choices[0].message.content;
 }
